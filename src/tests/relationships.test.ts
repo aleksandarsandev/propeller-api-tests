@@ -191,4 +191,52 @@ describe("Relationships - Products and Images", () => {
             mutation DeleteImage($id: Int!) { deleteImage(id: $id) }
         `, { id: orphanId });
     });
+
+    it("should delete images when product is deleted", async () => {
+        // Create product
+        const productData: any = await client.request(gql`
+        mutation {
+            createProduct(input: {
+                name: "Product To Delete"
+                price: 10.00
+                status: ACTIVE
+            }) {
+                id
+            }
+        }
+    `);
+        const productId = parseInt(productData.createProduct.id);
+
+        // Create image for that product
+        const imageData: any = await client.request(gql`
+        mutation CreateImage($productId: Int!) {
+            createImage(input: {
+                url: "https://example.com/delete-test.jpg"
+                priority: 100
+                productId: $productId
+            }) {
+                id
+            }
+        }
+    `, { productId });
+        const imageId = parseInt(imageData.createImage.id);
+
+        // Delete the product
+        await client.request(gql`
+        mutation DeleteProduct($id: Int!) {
+            deleteProduct(id: $id)
+        }
+    `, { id: productId });
+
+        // Image should also be deleted
+        const data: any = await client.request(gql`
+        query GetImage($id: Int!) {
+            image(id: $id) {
+                id
+            }
+        }
+    `, { id: imageId });
+
+        expect(data.image).toBeNull();
+    });
 });
