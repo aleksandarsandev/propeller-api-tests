@@ -261,7 +261,7 @@ The pipeline consists of two jobs:
 ###  Triggers
 
 The pipeline runs automatically on:
-- Every push to any branch (every commit)
+- Every push from any branch (every commit) in this project
 - Every pull request
 
 ###  Environment
@@ -273,4 +273,4 @@ The pipeline runs automatically on:
 ###  Notes
 
 - The pipeline validates the integration between the test suite and the API service.
-- If the base repository contains issues, tests may fail until the fixes from new branch are applied.
+- The pipeline works for the specific branch for the task `Version-aleksandarsandev`. 
