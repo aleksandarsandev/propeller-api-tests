@@ -273,4 +273,4 @@ The pipeline runs automatically on:
 ###  Notes
 
 - The pipeline validates the integration between the test suite and the API service.
-- If the base repository contains issues, tests may fail until the fixes from this branch are applied.
+- If the base repository contains issues, tests may fail until the fixes from new branch are applied.
