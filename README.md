@@ -231,3 +231,46 @@ priority: number;
 - Tests are run sequentially (`--runInBand`) to avoid race conditions caused by parallel test files creating and deleting shared data
 - Price must be greater than 0 (positive) based on real-world e-commerce assumptions, even though the README does not explicitly state this
 - The `images` query returns only images belonging to the requesting tenant, consistent with the multi-tenancy model applied to products
+
+## CI/CD Pipeline
+
+This project uses GitHub Actions to automatically build and test the application.
+
+### 🔧 Workflow Overview
+
+The pipeline consists of two jobs:
+
+#### 1. Build
+- Checks out the repository
+- Sets up Node.js (v20)
+- Installs dependencies using `npm ci`
+- Compiles TypeScript (`tsc --noEmit`) to validate code correctness
+
+#### 2. Test
+- Runs after a successful build
+- Checks out:
+  - The test project (this repository)
+  - The API project (external repository)
+- Installs Docker Compose
+- Starts the API using Docker
+- Seeds the database
+- Installs test dependencies
+- Executes automated tests
+- Stops and cleans up Docker containers
+
+###  Triggers
+
+The pipeline runs automatically on:
+- Every push to any branch (every commit)
+- Every pull request
+
+###  Environment
+
+- Node.js 20
+- Docker & Docker Compose used to run the API service
+- External API repository accessed via `API_REPO_TOKEN` secret
+
+###  Notes
+
+- The pipeline validates the integration between the test suite and the API service.
+- If the base repository contains issues, tests may fail until the fixes from this branch are applied.
