@@ -43,6 +43,7 @@ jobs:
         with:
           repository: propeller-commerce/propeller-sdet-task-Aleksandar-Sandev
           token: ${{ secrets.API_REPO_TOKEN }}
+          ref: Version-aleksandarsandev
           path: api
 
       - name: Setup Node.js
